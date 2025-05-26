@@ -1,0 +1,363 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<br>
+
+<style>
+  
+  .receipt-content .logo a:hover {
+    text-decoration: none;
+    color: #7793C4; 
+  }
+  
+  .receipt-content .invoice-wrapper {
+    background: #FFF;
+    border: 1px solid #CDD3E2;
+    box-shadow: 0px 0px 1px #CCC;
+    padding: 40px 40px 60px;
+    margin-top: 40px;
+    border-radius: 4px; 
+  }
+  
+  .receipt-content .invoice-wrapper .payment-details span {
+    color: #A9B0BB;
+    display: block; 
+  }
+  .receipt-content .invoice-wrapper .payment-details a {
+    display: inline-block;
+    margin-top: 5px; 
+  }
+  
+  .receipt-content .invoice-wrapper .line-items .print a {
+    display: inline-block;
+    border: 1px solid #9CB5D6;
+    padding: 13px 13px;
+    border-radius: 5px;
+    color: #708DC0;
+    font-size: 13px;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -ms-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    transition: all 0.2s linear; 
+  }
+  
+  .receipt-content .invoice-wrapper .line-items .print a:hover {
+    text-decoration: none;
+    border-color: #333;
+    color: #333; 
+  }
+  
+  .receipt-content {
+    background: #ECEEF4; 
+  }
+  @media (min-width: 1200px) {
+    .receipt-content .container {width: 900px; } 
+  }
+  
+  .receipt-content .logo {
+    text-align: center;
+    margin-top: 50px; 
+  }
+  
+  .receipt-content .logo a {
+    font-family: Myriad Pro, Lato, Helvetica Neue, Arial;
+    font-size: 36px;
+    letter-spacing: .1px;
+    color: #555;
+    font-weight: 300;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    -ms-transition: all 0.2s linear;
+    -o-transition: all 0.2s linear;
+    transition: all 0.2s linear; 
+  }
+  
+  .receipt-content .invoice-wrapper .intro {
+    line-height: 25px;
+    color: #444; 
+  }
+  
+  .receipt-content .invoice-wrapper .payment-info {
+    margin-top: 25px;
+    padding-top: 15px; 
+  }
+  
+  .receipt-content .invoice-wrapper .payment-info span {
+    color: #A9B0BB; 
+  }
+  
+  .receipt-content .invoice-wrapper .payment-info strong {
+    display: block;
+    color: #444;
+    margin-top: 3px; 
+  }
+  
+  @media (max-width: 767px) {
+    .receipt-content .invoice-wrapper .payment-info .text-right {
+    text-align: left;
+    margin-top: 20px; } 
+  }
+  .receipt-content .invoice-wrapper .payment-details {
+    border-top: 2px solid #EBECEE;
+    margin-top: 30px;
+    padding-top: 20px;
+    line-height: 22px; 
+  }
+  
+  
+  @media (max-width: 767px) {
+    .receipt-content .invoice-wrapper .payment-details .text-right {
+    text-align: left;
+    margin-top: 20px; } 
+  }
+  .receipt-content .invoice-wrapper .line-items {
+    margin-top: 40px; 
+  }
+  .receipt-content .invoice-wrapper .line-items .headers {
+    color: #A9B0BB;
+    font-size: 13px;
+    letter-spacing: .3px;
+    border-bottom: 2px solid #EBECEE;
+    padding-bottom: 4px; 
+  }
+  .receipt-content .invoice-wrapper .line-items .items {
+    margin-top: 8px;
+    border-bottom: 2px solid #EBECEE;
+    padding-bottom: 8px; 
+  }
+  .receipt-content .invoice-wrapper .line-items .items .item {
+    padding: 10px 0;
+    color: #696969;
+    font-size: 15px; 
+  }
+  @media (max-width: 767px) {
+    .receipt-content .invoice-wrapper .line-items .items .item {
+    font-size: 13px; } 
+  }
+  .receipt-content .invoice-wrapper .line-items .items .item .amount {
+    letter-spacing: 0.1px;
+    color: #84868A;
+    font-size: 16px;
+   }
+  @media (max-width: 767px) {
+    .receipt-content .invoice-wrapper .line-items .items .item .amount {
+    font-size: 13px; } 
+  }
+  
+  .receipt-content .invoice-wrapper .line-items .total {
+    margin-top: 30px; 
+  }
+
+  body{
+    margin-top:10px;
+    background:#eee;    
+}
+  
+</style>
+
+{% comment %} <div class="container">
+    <!-- Receipt Header -->
+    <div class="card mb-4">
+        <div class="card-header text-center">
+            <h3>Karibu Grocery Limited</h3>
+            <p>Address: 251 Maganjo Street, Kampala</p>
+            <p>Date: {{ date }} &nbsp;&nbsp; Time: {{ time }}</p>
+        </div>
+    </div>
+    <!-- Summary Section -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row text-center">
+                <div class="col-lg-4">
+                    <h5>Total Amount Received</h5>
+                    <p class="card-text">UGX{{ total }}</p>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Total Change Given</h5>
+                    <p class="card-text">UGX{{ change }}</p>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Net Amount</h5>
+                    <p class="card-text">UGX{{ net }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Itemized Purchase Section -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title text-center">Itemized Receipt</h5>
+            <hr>
+            {% for sale in sales %}
+            <div class="row">
+                <div class="col-lg-4">
+                    <p><strong>Item:</strong> {{ sale.item | title }}</p>
+                </div>
+                <div class="col-lg-2">
+                    <p><strong>Qty:</strong> {{ sale.quantity }}</p>
+                </div>
+                <div class="col-lg-2">
+                    <p><strong>Unit Price:</strong> UGX{{ sale.unit_price }}</p>
+                </div>
+                <div class="col-lg-4">
+                    <p><strong>Total Cost:</strong> UGX{{ sale.get_total }}</p>
+                </div>
+            </div>
+            <hr>
+            {% endfor %}
+        </div>
+    </div>
+    <!-- Payment Information -->
+    <div class="card mt-4">
+        <div class="card-body text-center">
+            <p><strong>Amount Paid:</strong> UGX{{ total }}</p>
+            <p><strong>Change Collected:</strong> UGX{{ change }}</p>
+            <p><strong>Payment Method:</strong> {{ payment_method }}</p>
+            <hr>
+            <p>Thank you for shopping with us!</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<div class="container">
+    <br>
+    <br>
+    <br>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h1 class="text-center">ORDER SUMMARY</h1><br>
+            <h2 class="lead">Customer Name: {{receipt.issued_to | title}}</h2>
+          </div>
+          <div class="card-block">
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <td><strong>Item Name</strong></td>
+                    <td class="text-xs-center"><strong>Item Quantity</strong></td>
+                    <td class="text-xs-right"><strong>Total Bill(Ugx)</strong></td>
+                    <td class="text-xs-right"><strong>Amount Paid(Ugx)</strong></td>
+                    <td class="text-xs-right">
+                      <strong>Total change(UgX)</strong>
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{receipt.item| title}}</td>
+                    <td class="text-xs-center">{{receipt.quantity }}</td>
+                    <td class="text-xs-center">Ug{{receipt.get_total | title}}</td>
+                    <td class="text-xs-right">Ugx{{ receipt.amount_received }}</td>
+                    <td class="text-xs-right">Ugx{{ receipt.get_change }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+
+ <div class="container bootdey" style="padding: 20px;">
+  <div class="row invoice row-printable">
+      <div class="col-md-10">
+          <div class="panel panel-default plain" id="dash_0">
+              <div class="panel-body" style="padding: 30px;">
+                  <div class="row">
+                      <div class="col-lg-6"></div>
+                      <div class="col-lg-6">
+                        <div class="card mb-4" style="background-color: rgb(198, 229, 234); border-radius: 5px; padding: 20px;">
+                            <div class="card-header text-center">
+                                <img src="{% static 'ebook/images/logo4.png' %}" alt="Logo" style="height: 90px; border-radius: 40px;">
+                                <h5 style="font-size: 1.5rem;">Karibu Grocery Limited</h5>
+                                <h5 style="font-size: 1rem;">Tel: 0767253788, 0754569816</h5>
+                                <h5 style="font-size: 1rem;">Address: 123 Maganjo Street, Kampala</h5>
+                                <h5 style="font-size: 1rem;">Email: www.Karibugroceries@gmail.com</h5>
+                                <h6 style="font-size: 0.8rem;">Date: {{ receipt.date }}</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="invoice-details mt25" style="margin-top: 25px;">
+                            <div class="well" style="padding: 10px; border: 1px solid #eaeaea; border-radius: 5px;">
+                                <ul class="list-unstyled mb0" style="margin-bottom: 0;">
+                                    <li><strong>Receipt #</strong> {{ invoice_number }}</li>
+                                    <li><strong>Date:</strong> {{ invoice_date }}</li>
+                                    <li><strong>Due Date:</strong> {{ due_date }}</li>
+                                    <li><strong>Status:</strong> <span class="label label-success">PAID</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="invoice-to mt25" style="margin-top: 25px;">
+                            <ul class="list-unstyled">
+                                <li><strong>Invoiced To</strong></li>
+                                <li>{{ issued_to }}</li>
+                            </ul>
+                        </div>
+
+                        <div class="invoice-items" style="margin-top: 25px;">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" style="width: 100%; border-collapse: collapse; text-align: center;">
+                                    <thead style="background-color: #d5d1defe;">
+                                        <tr>
+                                            <th style="padding: 10px; border: 1px solid #000;">Item</th>
+                                            <th style="padding: 10px; border: 1px solid #000;">Qty</th>
+                                            <th style="padding: 10px; border: 1px solid #000;">Unit Price</th>
+                                            <th style="padding: 10px; border: 1px solid #000;">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding: 10px; border: 1px solid #000;">{{ receipt.item | title }}</td>
+                                            <td class="text-center" style="padding: 10px; border: 1px solid #000;">{{ receipt.quantity }}</td>
+                                            <td class="text-center" style="padding: 10px; border: 1px solid #000;">UGX {{ receipt.unit_price }}</td>
+                                            <td class="text-center" style="padding: 10px; border: 1px solid #000;">UGX {{ receipt.amount_received }}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th class="text-center" style="padding: 10px; border: 1px solid #000;">UGX {{ receipt.get_total | title }}</th>
+                                          </tr>
+                                          <tr>
+                                              <th colspan="3" class="text-right" style="padding: 10px; border: 1px solid #000;">Tax (18%):</th>
+                                              <th class="text-center" style="padding: 10px; border: 1px solid #000;">UGX {{ tax_amount }}</th>
+                                          </tr>
+                                          <tr>
+                                              <th colspan="3" class="text-right" style="padding: 10px; border: 1px solid #000;">Total:</th>
+                                              <th class="text-center" style="padding: 10px; border: 1px solid #000;">UGX {{ total_amount }}</th>
+                                          </tr>
+                                          <tr>
+                                              <th colspan="3" class="text-right" style="padding: 10px; border: 1px solid #000;">Amount Received:</th>
+                                              <th class="text-center" style="padding: 10px; border: 1px solid #000;">UGX {{ amount_received }}</th>
+                                          </tr>
+                                          <tr>
+                                              <th colspan="3" class="text-right" style="padding: 10px; border: 1px solid #000;">Balance:</th>
+                                              <th class="text-center" style="padding: 10px; border: 1px solid #000;">UGX {{ receipt.get_change | title }}</th>
+                                          </tr>
+                                      </tfoot>
+                                  </table>
+                              </div>
+                          </div>
+
+                          <div class="invoice-footer mt25" style="margin-top: 25px;">
+                              <p class="text-center">Generated on {{ receipt.date }} <a href="#" class="btn btn-default ml15" style="margin-left: 15px;"><i class="fa fa-print mr5"></i> Print</a></p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+          {% endblock %}

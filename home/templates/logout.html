@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<style>
+  .logout-container {
+    margin-top: 80px;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .logout-btn {
+    background-color: orange;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    width: 300px;
+    height: 70px;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  .logout-btn:hover {
+    background-color: orangered;
+  }
+
+  .logo {
+    max-width: 100%;
+    height: auto;
+    margin-top: 40px;
+  }
+</style>
+
+<div class="container logout-container">
+  <h2>Logged Out Successfully!</h2>
+  <br>
+  <a href="{% url 'login' %}">
+    <button class="logout-btn">Login Again</button>
+  </a>
+
+  <div class="row justify-content-center mt-5">
+    <div class="col-lg-5">
+      
+    </div>
+  </div>
+</div>
+{% endblock %}

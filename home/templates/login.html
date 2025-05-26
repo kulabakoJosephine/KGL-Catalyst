@@ -1,0 +1,207 @@
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+<header>
+  <div class="header-left">
+    <a href="/">
+      <img src="{%  static '/sac.jpg' %}" alt="Logo">
+    </a>
+    
+    <a href="/" <span>Karibu Groceries</span><a></a>
+   
+  </div>
+  <!-- <a href="/" class="home">Landing Page</a> -->
+  <div class="header-right">
+      {% comment %} <a href="/login">Login</a> {% endcomment %}
+  </div>
+
+</header>
+
+<br><br><br><br><br><br>
+
+    <h2> LOGIN</h2> 
+    <form method="POST" class="login-form">
+      <div class="container">
+       {% csrf_token %}
+        {{ form |crispy }}
+        <br>
+      </div>
+      <div class="button_container">
+        <button type="submit"class="btn btn-primary" >Login</button>
+        </div>
+    </form>
+
+    <footer>
+      <p>&copy; copyright 2025 Kulabako Josephine. All rights reserved</p>
+    </footer>
+
+<style>
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    padding: 16px; 
+    background-color:orange; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .header-left img {
+    height: 50px; 
+    margin-right: 3px; 
+    border-radius: 50%;
+    width: 60px;
+  }
+
+  .header-left a {
+    text-decoration: none;
+    color: white; 
+    font-weight: bold; 
+    margin-right: 15px;
+    padding: 0px; 
+  }
+
+  .header-right {
+    margin-left: auto;
+  }
+
+  .header-right a {
+    text-decoration: none;
+    color: white; 
+    padding: 5px 10px;
+    border: 1px solid #ccc; 
+    border-radius: 3px; 
+    margin-right: 22px; 
+  }
+
+  .header-right a:hover {
+    background-color: #ddd; 
+
+  }
+  span{ color: white;}
+  .home{margin-left: 10px;color:white;}
+
+
+ 
+
+
+  .login-form {
+    display:grid;
+    min-width:300px;
+    margin:  auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    background-color:white;
+    border-radius: 10px;
+    width:300px;
+    border: 5px solid  orange;
+        box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.1);
+        transition: border-color 0.3s, box-shadow 0.3s;
+
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+    
+
+  }
+
+  .form-control {
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 8px 12px;
+   
+
+    
+  }
+
+  footer {
+    background-color:orange;
+  
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      padding: 10px;
+      color: white;
+    
+    }
+  
+    
+    
+  
+  .container{margin-top: 10px;
+  font-family: sans-serif;
+margin-left:3rem; }
+
+
+
+
+  .button-container {
+    display: flex;
+    justify-content: center; 
+  }
+  
+  .btn-primary {
+    
+    
+    color: white; 
+    padding: 15px 30px; 
+    border-radius: 5px; 
+    border: none; 
+    font-weight: bold; 
+    background-color: orangered; 
+   
+  }
+  
+  button[type="submit"] {
+    margin-top: 2px;
+    background-color:orangered ;
+    color: white;
+    border: none;
+    width:60%;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    height: 33px;
+    padding: 10px;
+    transition: background-color 0.8s, color 0.7s; /* Adding transition effect */
+    margin-left:3rem;
+}
+
+button[type="submit"]:hover {
+    /* Changing background color on hover */
+  background-color: orange; /* Changing text color on hover */
+}
+  
+h2{margin-left:580px;
+  font-family: sans-serif;
+  color: white;
+  text-shadow: 2px 2px 4px #000000;}  
+  
+  input[type="text"],
+  input[type="password"],
+  input[type="date"],
+  select {
+      border: 2px solid rgba(0, 128, 255, 0.2);
+      box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0.1);
+      transition: border-color 0.3s, box-shadow 0.3s;
+  }
+</style>
+
+
+
+{% endblock %}

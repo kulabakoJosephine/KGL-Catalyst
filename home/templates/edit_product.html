@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  .form-container {
+    max-width: 500px;
+    margin: 50px auto;
+    background-color: rgba(255, 165, 0, 0.1);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(255, 69, 0, 0.3);
+  }
+
+  .form-container h2 {
+    text-align: center;
+    color: orangered;
+    margin-bottom: 25px;
+  }
+
+  .btn-orange {
+    background-color: orangered;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    width: 100%;
+  }
+
+  .btn-orange:hover {
+    background-color: orange;
+    color: white;
+  }
+
+  .btn-cancel {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: orangered;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .btn-cancel:hover {
+    text-decoration: underline;
+    color: darkorange;
+  }
+</style>
+
+<div class="container">
+  <div class="form-container">
+    <h2>Edit Product - {{ product.item_name }}</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn-orange">Save</button>
+      <a href="{% url 'product_detail' product.id %}" class="btn-cancel">Cancel</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

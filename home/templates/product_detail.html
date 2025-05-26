@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  .card-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: rgba(255, 165, 0, 0.1); /* Glassy orange */
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 6px 16px rgba(255, 69, 0, 0.2);
+  }
+
+  .card-title {
+    font-weight: bold;
+    font-size: 1.8rem;
+    color: orangered;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 0 10px;
+  }
+
+  .info-label, .info-value {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .btn-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    gap: 10px;
+  }
+
+  .btn-action {
+    flex: 1;
+    height: 50px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+    line-height: 30px;
+    color: white;
+  }
+
+  .btn-orange {
+    background-color: orange;
+  }
+
+  .btn-orange:hover {
+    background-color: darkorange;
+  }
+
+  .btn-orangered {
+    background-color: orangered;
+  }
+
+  .btn-orangered:hover {
+    background-color: tomato;
+  }
+</style>
+
+<div class="card-container">
+  <div class="card-title">Product Details</div>
+
+  <div class="info-row">
+    <span class="info-label">Name:</span>
+    <span class="info-value">{{ product.item_name }}</span>
+  </div>
+  <div class="info-row">
+    <span class="info-label">Quantity:</span>
+    <span class="info-value">{{ product.total_quantity }}</span>
+  </div>
+  <div class="info-row">
+    <span class="info-label">Unit Cost:</span>
+    <span class="info-value">UGX {{ product.unit_cost }}</span>
+  </div>
+  <div class="info-row">
+    <span class="info-label">Unit Price:</span>
+    <span class="info-value">UGX {{ product.unit_price }}</span>
+  </div>
+
+  <div class="btn-group">
+    <a href="{% url 'add_to_stock' product.id %}" class="btn-action btn-orange">Update Stock</a>
+    <a href="{% url 'issue_item' product.id %}" class="btn-action btn-orangered">Sale Item</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    
+    .hover-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      border: 1px solid transparent;
+    }
+
+    .hover-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      border-color: orangered;
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: orangered;
+    }
+
+    .card-title {
+      color: orangered;
+      font-weight: bold;
+    }
+
+    .card-text {
+      color: #6c757d;
+    }
+
+    .card:hover .card-title {
+      color: orange;
+    }
+
+    .card:hover .card-icon {
+      color: orange;
+    }
+
+    .card-body {
+      background-color: #fffaf0;
+    }
+
+    .card-body:hover {
+      background-color: #fff3e0;
+    }
+  </style>
+
+  <body class="bg-light">
+
+    <div class="container mt-5">
+      <div class="row g-4 justify-content-center">
+
+        <!-- View All Sales -->
+        <div class="col-md-5">
+          <a href="{% url 'all_sales' %}" class="text-decoration-none">
+            <div class="card hover-card h-100 shadow-sm text-center p-3">
+              <div class="card-body">
+                <i class="bi bi-bar-chart-line-fill card-icon"></i>
+                <h5 class="card-title">All Sales</h5>
+                <p class="card-text">Access the complete list of all sales transactions.</p>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- View Final Receipts -->
+        <div class="col-md-5">
+          <a href="{% url 'receipt' %}" class="text-decoration-none">
+            <div class="card hover-card h-100 shadow-sm text-center p-3">
+              <div class="card-body">
+                <i class="bi bi-receipt-cutoff card-icon text-success"></i>
+                <h5 class="card-title">View Final Receipts</h5>
+                <p class="card-text">Download or review all final sales receipts.</p>
+              </div>
+            </div>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+{% endblock %}

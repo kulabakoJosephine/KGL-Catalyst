@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<br/>
+
+<!-- Action Buttons -->
+<button type="submit" class="btn btn-warning">
+    <a href="/hom/" style="text-decoration:none; color:white;">Back</a>
+</button>
+<button type="submit" class="btn btn-warning" style="float:right;">
+    <a href="/receipt/" style="text-decoration:none; color:white;">Next</a>
+</button>
+
+<div class="container">
+  <!-- Form Start -->
+  <form method="POST" action="" style="border-radius: 25px; 
+    border: 2px solid white; background: rgba(255, 165, 0, 0.3); /* Glassy orange effect */
+    padding: 20px; font-weight: bolder; color: black; width: 400px; height: auto;">
+    
+    <h1 class="text-center" style="color: orangered;">SALES FORM</h1><br/>
+    
+    {% csrf_token %}
+    {{ sales_form | crispy }}
+    
+    <button type="reset" class="btn btn-danger" style="height:50px; background-color: #dc3545; border-color: #dc3545;">Cancel</button>
+    <input type="submit" class="btn btn-warning" style="float:right; width:200px; height:50px; background-color: orangered; border-color: orangered;">
+  </form>
+</div>
+
+{% endblock %}

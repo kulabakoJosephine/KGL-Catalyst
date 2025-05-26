@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  /* Card styling */
+  .card {
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
+    backdrop-filter: blur(10px); /* Optional: adds a frosted glass effect */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px; /* Adjust as needed */
+  }
+
+  /* Table styling */
+  table {
+    background: rgba(0, 0, 0, 0.3); /* Transparent black background */
+    border-collapse: collapse;
+    width: 100%;
+    color: white;
+  }
+
+  th {
+    border: 2px solid white;
+    text-align: center;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.5); /* Slightly darker transparent header */
+  }
+
+  td {
+    border: 2px solid white;
+    padding: 10px;
+    text-align: center;
+    color: white;
+  }
+
+  /* Button styling */
+  .btn {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bolder;
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-sale {
+    background-color: red;
+  }
+
+  .btn-stock {
+    background-color: blue;
+  }
+
+  .btn:hover {
+    opacity: 0.8;
+  }
+
+  /* Center buttons */
+  .button-group {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+</style>
+
+<br>
+
+<div class="button-group">
+  <a href=""><input type="button" value="Sale Item" class="btn btn-sale"></a>
+  <a href=""><input type="button" value="Add to Stock" class="btn btn-stock"></a>
+</div>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Item Name</th>
+        <th scope="col">Tonnage(Kgs)</th>
+        <th scope="col">Selling Price</th>
+        <th scope="col">Cost Price(UGX)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+      <tr>
+        <td>{{ product.item_name }}</td>
+        <td>{{ product.tonnage_name }}</td>
+        <td>{{ product.total_quantity }}</td>
+        <td>UGX {{ product.unit_price }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="4">No products available.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

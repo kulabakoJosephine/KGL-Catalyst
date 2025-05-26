@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block content %}
+<br /><br>
+
+<style>
+  body {
+    background-color: #f8f9fa;
+  }
+
+  .container {
+    padding: 30px;
+  }
+
+  .card-header {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .card {
+    width: 100%;
+    padding: 25px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    font-family: 'Courier New', Courier, monospace;
+    position: relative;
+  }
+
+  .card::before, .card::after {
+    content: "";
+    position: absolute;
+    width: 60%;
+    height: 2px;
+    background: repeating-linear-gradient(to right, #aaa 0px, #aaa 5px, transparent 5px, transparent 10px);
+    left: 20%;
+  }
+
+  .card::before {
+    top: 12px;
+  }
+
+  .card::after {
+    bottom: 12px;
+  }
+
+  .card-body {
+    padding-top: 25px;
+    padding-bottom: 25px;
+  }
+
+  .card-title, .card-text {
+    font-size: 15px;
+    margin: 10px 0;
+    border-bottom: 1px dotted #ccc;
+    padding-bottom: 4px;
+  }
+
+  .card-title span, .card-text span {
+    font-weight: bold;
+    color: #000;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .col-lg-5 {
+    flex: 0 0 calc(48%);
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .col-lg-5 {
+      flex: 0 0 100%;
+    }
+  }
+
+  .receipt-footer {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .btn-danger {
+    font-size: 13px;
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+</style>
+
+<div class="container">
+  <h1 class="card-header">ALL RECEIPTS</h1><br>
+
+  <div class="row">
+    {% for sale in sales %}
+    <div class="col-lg-5">
+      <div class="card">
+        <div class="card-body">
+          <p class="card-title">Customer: <span>{{ sale.issued_to|title }}</span></p>
+          <p class="card-text">Item: <span>{{ sale.item }}</span></p>
+          <p class="card-text">Qty: <span>{{ sale.quantity }} Kg</span></p>
+          <p class="card-text">Amount Paid: <span>UGX {{ sale.amount_received }}</span></p>
+          <p class="card-text">Total Price: <span>UGX {{ sale.get_total }}</span></p>
+          <p class="card-text">Change: <span>UGX {{ sale.get_change }}</span></p>
+          <div class="receipt-footer">
+            <a href="{% url 'receipt_detail' sale.id %}" class="btn btn-sm btn-danger">Final Receipt</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

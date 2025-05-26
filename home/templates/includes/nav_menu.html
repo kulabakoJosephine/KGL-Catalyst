@@ -1,0 +1,32 @@
+{% load static %}
+<style>
+    .navbar{
+        font-weight: bolder;
+        background: linear-gradient(to bottom right,  orange, ); /* Green gradient */
+      }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark "> 
+    <img src=""  alt="Logo" style="height: 90px; border-radius: 40px;">
+    
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="nav navbar-nav ml-auto">
+         {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'hom' %}" style="color: white;">STOCK</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'all_sales' %}" style="color: white;">ALL SALES</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'receipt' %}" style="color: white;">RECEIPTS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}" style="color: white;">LOGOUT</a>
+            </li>
+          {% endif %}
+        </ul>
+   </nav>

@@ -1,0 +1,15 @@
+.custom-form{
+    width: 600px;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    border-radius: 2px solid white;
+}
+
+
+
+h2{
+    font-weight: bolder;
+    text-align: center;
+    color: brown;
+}

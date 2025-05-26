@@ -1,0 +1,97 @@
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-image: url("{% static 'css/images/mai.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 12px;
+        padding: 40px;
+        max-width: 90%;
+        width: 500px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        color: black;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .login-button {
+        background-color: #ff8c00;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 20px;
+        transition: background-color 0.3s ease;
+        font-weight: bold;
+    }
+
+    .login-button:hover {
+        background-color: #e67300;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+        color: black;
+        font-weight: bold;
+    }
+
+    .intro {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: black;
+        font-weight: bold;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: #ffa500;
+        color: black;
+        text-align: center;
+        padding: 10px;
+        font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Welcome to Karibu Groceries Limited (KGL)</h1>
+
+    <p class="intro">
+      At Karibu Groceries Limited (KGL), we are committed to delivering quality fresh produce and grocery solutions with efficiency, integrity, and a customer-first approach.
+      Serving communities through reliable supply chains and dedicated service, we aim to be your trusted partner in everyday living.
+    </p>
+
+    <a href="{% url 'Login' %}" class="login-button">Login</a>
+  </div>
+
+  <footer>
+    &copy; Karibu Groceries Limited, All rights reserved by Josephine
+  </footer>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+body {
+    background-color: #f4f6f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: #ff4500;
+    color: white;
+    padding-top: 60px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-link {
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.sidebar-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-left: 4px solid white;
+}
+
+/* Main content area */
+.main-content {
+    margin-left: 250px;
+    padding: 40px 20px;
+}
+
+/* Dashboard Cards */
+.hover-card {
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    background-color: #fff;
+    border: 2px solid #ff6600;
+    color: #ff6600;
+    text-align: center;
+}
+
+.hover-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.card-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: #ff6600;
+}
+
+.card-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 0.95rem;
+    color: #ff6600;
+}
+
+/* Responsive Grid */
+.row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.col-md-5 {
+    flex: 0 0 300px;
+    display: flex;
+}
+
+/* Remove default anchor underlines */
+a.text-decoration-none {
+    text-decoration: none;
+}
+
+/* Page header */
+h3.text-center {
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+</style>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h3>Sales Dashboard</h3>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="{% url 'hom' %}" class="sidebar-link">STOCK</a>
+        <a href="{% url 'all_sales' %}" class="sidebar-link">ALL SALES</a>
+        <a href="{% url 'receipt' %}" class="sidebar-link">RECEIPTS</a>
+        <a href="{% url 'logout' %}" class="sidebar-link">LOGOUT</a>
+    </nav>
+</div>
+
+<!-- Main Dashboard Content -->
+<div class="main-content">
+    <h3 class="text-center text-dark">Sales Agent Dashboard</h3>
+    <div class="row">
+
+        <!-- Record Sales -->
+        <div class="col-md-5">
+            <a href="{% url 'record_sales' %}" class="text-decoration-none w-100">
+                <div class="card hover-card">
+                    <div class="card-body">
+                        <i class="bi bi-cart-plus-fill card-icon"></i>
+                        <h5 class="card-title">Add sales</h5>
+                        <p class="card-text">Quickly record a new sales transaction.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Deferred Payments -->
+        <div class="col-md-5">
+            <a href="{% url 'deffered_payments' %}" class="text-decoration-none w-100">
+                <div class="card hover-card">
+                    <div class="card-body">
+                        <i class="bi bi-receipt-cutoff card-icon"></i>
+                        <h5 class="card-title">Deferred Payments</h5>
+                        <p class="card-text">Manage sales with pending payments.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

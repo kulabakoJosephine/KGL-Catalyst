@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<style>
+  .sales-form-container {
+    max-width: 600px;
+    background-color: rgba(255, 165, 0, 0.2);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    margin-top: 50px;
+  }
+  .btn-orange {
+    background-color: orange;
+    color: white;
+    font-weight: bold;
+  }
+  .btn-orange:hover {
+    background-color: darkorange;
+  }
+  .btn-orangered {
+    background-color: orangered;
+    color: white;
+    font-weight: bold;
+  }
+  .btn-orangered:hover {
+    background-color: tomato;
+  }
+  .stock-selector {
+    margin-bottom: 20px;
+  }
+  .quantity-error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: -15px;
+    margin-bottom: 15px;
+  }
+  .form-select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    width: 100%;
+  }
+  .form-label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .change-display {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    display: none;
+  }
+  .invalid-feedback {
+    display: none;
+    color: red;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+  }
+  .was-validated .form-control:invalid ~ .invalid-feedback {
+    display: block;
+  }
+</style>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="sales-form-container">
+        <h2 class="text-center mb-4" style="color: orangered; font-weight: bold;">ADD SALES</h2>
+        
+        <!-- Fixed action URL - Replace 'sales_add' with your actual URL name -->
+        <form method="POST" action="{% url 'sales_add' %}" id="salesForm" class="needs-validation" novalidate>
+          {% csrf_token %}
+          
+          <div class="stock-selector">
+            <label for="itemSelect" class="form-label">Select Product*</label>
+            <select class="form-select" id="itemSelect" name="item" required>
+              <option value="">-- Select a product --</option>
+              {% for stock in stocks %}
+                <option value="{{ stock.id }}" 
+                  {% if preselected_item == stock.id %}selected{% endif %}
+                  data-price="{{ stock.unit_price }}"
+                  data-quantity="{{ stock.total_quantity }}">
+                  {{ stock.item_name|title }}
+                </option>
+              {% endfor %}
+            </select>
+            <div class="invalid-feedback">Please select a product</div>
+          </div>
+          
+          {% if quantity_error %}
+            <div class="quantity-error">{{ quantity_error }}</div>
+          {% endif %}
+          
+          <div class="form-group mb-3">
+            <label for="id_quantity">Quantity*</label>
+            <input type="number" name="quantity" class="form-control" required id="id_quantity" min="1">
+            <div class="invalid-feedback">Please enter a valid quantity</div>
+          </div>
+          
+          <div class="form-group mb-3">
+            <label for="id_unit_price">Unit Price*</label>
+            <input type="number" name="unit_price" class="form-control" required id="id_unit_price" step="0.01" min="0">
+            <div class="invalid-feedback">Please enter a valid unit price</div>
+          </div>
+          
+          <div class="form-group mb-3">
+            <label for="id_amount_received">Amount Received*</label>
+            <input type="number" name="amount_received" class="form-control" required id="id_amount_received" step="0.01" min="0">
+            <div class="invalid-feedback">Please enter the amount received</div>
+          </div>
+          
+          <div id="changeDisplay" class="change-display">
+            <strong>Total Amount:</strong> <span id="totalAmount">0.00</span><br>
+            <strong>Change:</strong> <span id="changeAmount">0.00</span>
+          </div>
+          
+          <div class="row mt-4">
+            <div class="col-6">
+              <button type="submit" class="btn btn-orange w-100">Submit</button>
+            </div>
+            <div class="col-6">
+              <a href="{% url 'hom' %}" class="btn btn-orangered w-100">Cancel</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const itemSelect = document.getElementById('itemSelect');
+  const quantityInput = document.getElementById('id_quantity');
+  const unitPriceInput = document.getElementById('id_unit_price');
+  const amountReceivedInput = document.getElementById('id_amount_received');
+  const totalAmountDisplay = document.getElementById('totalAmount');
+  const changeAmountDisplay = document.getElementById('changeAmount');
+  const changeDisplay = document.getElementById('changeDisplay');
+  const form = document.getElementById('salesForm');
+  
+  // Update price automatically when product is selected
+  itemSelect.addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    if (selectedOption.value) {
+      unitPriceInput.value = selectedOption.dataset.price;
+      
+      // Clear any existing quantity error
+      const errorDiv = document.querySelector('.quantity-error');
+      if (errorDiv) errorDiv.remove();
+      
+      calculateTotal();
+    }
+  });
+  
+  // Calculate total and change when quantity or price changes
+  [quantityInput, unitPriceInput].forEach(input => {
+    input.addEventListener('input', calculateTotal);
+  });
+  
+  // Calculate change automatically
+  amountReceivedInput.addEventListener('input', function() {
+    calculateTotal();
+  });
+  
+  function calculateTotal() {
+    const quantity = parseFloat(quantityInput.value) || 0;
+    const unitPrice = parseFloat(unitPriceInput.value) || 0;
+    const amountReceived = parseFloat(amountReceivedInput.value) || 0;
+    
+    const total = quantity * unitPrice;
+    totalAmountDisplay.textContent = total.toFixed(2);
+    
+    const change = amountReceived - total;
+    changeAmountDisplay.textContent = change.toFixed(2);
+    
+    // Show change display if we have valid inputs
+    if (quantity > 0 && unitPrice > 0) {
+      changeDisplay.style.display = 'block';
+    } else {
+      changeDisplay.style.display = 'none';
+    }
+  }
+  
+  // Validate form before submission
+  form.addEventListener('submit', function(e) {
+    if (!form.checkValidity()) {
+      e.preventDefault();
+      e.stopPropagation();
+      form.classList.add('was-validated');
+      return false;
+    }
+    
+    const selectedOption = itemSelect.options[itemSelect.selectedIndex];
+    if (!selectedOption.value) {
+      e.preventDefault();
+      alert('Please select a product');
+      itemSelect.focus();
+      return false;
+    }
+    
+    const available = parseInt(selectedOption.dataset.quantity) || 0;
+    const requested = parseInt(quantityInput.value) || 0;
+    
+    if (requested <= 0) {
+      e.preventDefault();
+      alert('Quantity must be greater than zero');
+      quantityInput.focus();
+      return false;
+    }
+    
+    if (requested > available) {
+      e.preventDefault();
+      alert(`Only ${available} units available for ${selectedOption.text.trim()}!`);
+      quantityInput.focus();
+      return false;
+    }
+    
+    const amountReceived = parseFloat(amountReceivedInput.value) || 0;
+    const total = requested * (parseFloat(unitPriceInput.value) || 0);
+    
+    if (amountReceived < total) {
+      e.preventDefault();
+      alert('Amount received cannot be less than the total amount');
+      amountReceivedInput.focus();
+      return false;
+    }
+    
+    // If we get here, form is valid and can be submitted
+    return true;
+  });
+  
+  // Initialize calculations if fields are pre-filled
+  calculateTotal();
+});
+</script>
+{% endblock %}

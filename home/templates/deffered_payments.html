@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block styles %}
+<style>
+  body {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  /* Custom styles for buttons */
+  .btn-custom {
+    background-color: orange;
+    color: white;
+    font-weight: bolder;
+    width: 100px;
+    height: 50px;
+  }
+
+  .btn-custom:hover {
+    background-color: orangered;
+    color: white;
+  }
+
+  .btn-danger-custom {
+    background-color: orangered;
+    color: white;
+    font-weight: bolder;
+  }
+
+  .btn-danger-custom:hover {
+    background-color: darkorange;
+    color: white;
+  }
+
+  /* Form styling */
+  .form-container {
+    border-radius: 25px;
+    border: 2px solid white;
+    padding: 20px;
+    color: black;
+    width: 400px;
+    background-color: rgba(255, 165, 0, 0.1); /* Light orange background */
+    margin: 50px auto;
+  }
+
+  /* Adjust button container for form */
+  .form-container .btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .form-container .btn-reset {
+    background-color: #d9534f; /* Bootstrap Danger color */
+    color: white;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- Navigation Buttons -->
+  
+  <button type="submit" class="btn btn-custom" style="float: right;"><a href="/deffered_payments_list" style="text-decoration: none; color: white;">Deferred Payments</a></button>
+
+  <!-- Form -->
+  <form action="" method="post" class="form-container">
+    {% csrf_token %}
+    {{ form | crispy }}
+    
+    <!-- Submit and Cancel Buttons -->
+    <button type="submit" class="btn btn-custom">Submit</button>
+    <button type="reset" class="btn btn-danger-custom">Cancel</button>
+  </form>
+</div>
+{% endblock %}
